@@ -297,6 +297,12 @@ return [
             'topnav_right' => true,
         ],
         [
+            'text'         => 'Buku',
+            'url'         => 'admin/books',
+            'icon' => 'fas fa-fw fa-book',
+            'can' => 'isAdmin',
+        ],
+        [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
@@ -319,11 +325,6 @@ return [
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
-        [
-            'text' => 'Book',
-            'url'  => 'admin/book',
-            'icon' => 'fas fa-fw fa-book',
-        ],
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
