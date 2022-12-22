@@ -56,12 +56,13 @@
         </div>
         <div class="card-body">
             <button class="btn btn-primary" data-toggle="modal" data-target="#tambahBukuModal">
-                <i class="fa fa-plus">   Tambah Data</i>
+                <i class="fa fa-plus">Tambah Data</i>
             </button>
-            <a href="{{ route('admin.print.books') }}" target="_blank" class="btn btn-secondary">
-                <i class="fa fa-print"></i>
-                Cetak PDF
-            </a>
+            <a href="{{ route('admin.print.books') }}" target="_blank" class="btn btn-secondary"><i class="fa fa-print"></i>Cetak PDF</a>
+            <div class="btn-group" role="group" aria-label="Basic Example">
+                <a href="{{ route('admin.book.export') }}" class="btn btn-info" target="_blank">Export</a>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#importDataModal">Import</button>
+            </div>
             <hr>
             <table id="table-data" class="table table-bordered">
                 <thead>
@@ -95,7 +96,7 @@
                                         </div>
                                         <div class="form-group">
                                         <label for="cover">Cover</label>
-                                            <input type="file"class="form-control" name="cover" id="cover"/>
+                                            <input type="file"class="form-control" name="cover" id="cover" required/>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -162,6 +163,33 @@
             </div> 
         </div> 
     </div> 
+</div>
+
+<!-- Modal Import Data FORM -->
+<div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="exampleModallabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-tittle" id="exampleModalLabel">Import Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ route('admin.book.import') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="cover">Upload File</label>
+                        <input type="file" class="form-control" name="file"/>
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import Data</button>            
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @stop
 
