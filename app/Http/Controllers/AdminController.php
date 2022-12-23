@@ -58,7 +58,7 @@ class AdminController extends Controller
 
             $filename = 'cover_buku'.time().'.'. $extension;
 
-            $req->file('cover')->storeAs('public/cover_buku', $filename);
+            $req->file('cover')->storeAs('storage/cover_buku', $filename);
 
             $book->cover = $filename;
         }
@@ -74,39 +74,39 @@ class AdminController extends Controller
     public function getDataBuku($id){
 
         $buku = Book::find($id);
-        
+
         return response()->json($buku);
     }
 
-    public function update_book(Request $req) { 
+    public function update_book(Request $req) {
 
         $book = Book::find($req->get('id'));
 
         $validate = $req->validate([
-            'judul' => 'required|max:255', 
-            'penulis' => 'required', 
-            'tahun' => 'required', 
-            'penerbit' => 'required', 
+            'judul' => 'required|max:255',
+            'penulis' => 'required',
+            'tahun' => 'required',
+            'penerbit' => 'required',
         ]);
 
-        $book->judul = $req->get('judul'); 
-        $book->penulis = $req->get('penulis'); 
-        $book->tahun = $req->get('tahun'); 
-        $book->penerbit = $req->get('penerbit'); 
+        $book->judul = $req->get('judul');
+        $book->penulis = $req->get('penulis');
+        $book->tahun = $req->get('tahun');
+        $book->penerbit = $req->get('penerbit');
 
         if ($req->hasFile('cover')) {
-            $extension = $req->file('cover')->extension(); 
+            $extension = $req->file('cover')->extension();
             $filename = 'cover_buku_'.time().'.'.$extension;
-            $req->file('cover')->storeAs('public/cover_buku', $filename ); 
-            
-            Storage::delete('public/cover_buku/'.$req->get('old_cover')); 
-            $book->cover = $filename; 
-        } 
-        
-        $book->save(); 
+            $req->file('cover')->storeAs('public/cover_buku', $filename );
 
-        $notification = array( 
-            'message' => 'Data buku berhasil diubah', 
+            Storage::delete('public/cover_buku/'.$req->get('old_cover'));
+            $book->cover = $filename;
+        }
+
+        $book->save();
+
+        $notification = array(
+            'message' => 'Data buku berhasil diubah',
             'alert-type' => 'success'
         );
 
@@ -114,25 +114,25 @@ class AdminController extends Controller
     }
 
 
-    public function delete_book($id) { 
+    public function delete_book($id) {
 
-        $book = Book::find($id); 
+        $book = Book::find($id);
 
         Storage::delete('public/cover_buku/'.$book->cover);
-        
-        $book->delete(); 
-        
-        $success = true; 
-        $message = "Data buku berhasil dihapus"; 
-        
-        return response()->json([ 
-            'success' => $success, 
-            'message' => $message, 
-        ]); 
+
+        $book->delete();
+
+        $success = true;
+        $message = "Data buku berhasil dihapus";
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message,
+        ]);
     }
 
     public function print_books(){
-        
+
         $books = Book::all();
 
         $pdf = PDF::loadview('print_books',['books'=> $books]);

@@ -11,11 +11,6 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @if ($user->roles_id == 1)
-                    Anda login sebagai admin
-                    @else
-                    Anda login seabgai user
-                    @endif
                 </div>
             </div>
         </div>
