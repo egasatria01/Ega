@@ -12,11 +12,11 @@ class BookController extends Controller
 {
     public function books(){
         try{
-            $books = book::all();
+            $books = Book::all();
 
             return response()->json([
                 'message' => 'success',
-                'books' => '$books',
+                'books' => $books,
             ], 200);
         }   catch (Exception $e){
             return response()->json([
@@ -24,6 +24,7 @@ class BookController extends Controller
             ], 401);
         }
     }
+    
 
     public function create(Request $req){
         $validated = $req->validate([
@@ -31,12 +32,12 @@ class BookController extends Controller
             'penulis' => 'required',
             'tahun' => 'required',
             'penerbit' => 'required',
-            'cover' => 'image|file|max:2048',
+            'cover' => 'image|file|max:2048'
         ]);
 
         if($req->hasFile('cover')){
             $extension = $req->file('cover')->extension();
-            $filename = 'cover_buku' . time() . '.' . $extension;
+            $filename = 'cover_buku_' .time().'.' .$extension;
 
             $req->file('cover')->storeAs(
                 'public/cover_buku',
@@ -50,7 +51,7 @@ class BookController extends Controller
 
         return response()->json([
             'message' => 'buku berhasil ditambahkan',
-            'book' => '$validate',
+            'book' => $validated,
         ], 200);
     }
 
@@ -60,12 +61,12 @@ class BookController extends Controller
             'penulis' => 'required',
             'tahun' => 'required',
             'penerbit' => 'required',
-            'cover' => 'image|file|max:2048',
+            'cover' => 'image|file|max:2048'
         ]);
 
         if($req->hasFile('cover')){
             $extension = $req->file('cover')->extension();
-            $filename = 'cover_buku' . time() . '.' . $extension;
+            $filename = 'cover_buku_' .time().'.'.$extension;
 
             $req->file('cover')->storeAs(
                 'public/cover_buku',
@@ -75,13 +76,13 @@ class BookController extends Controller
             $validated['cover'] = $filename;
         }
 
-        $book::Book::find($id);
+        $book = Book::find($id);
         Storage::delete('public/cover_buku/' . $book->cover);
         $book->update($validated);
 
         return response()->json([
             'message' => 'buku berhasil diubah',
-            'book' => '$book',
+            'book' => $book,
         ], 200);
     }
 
@@ -89,7 +90,7 @@ class BookController extends Controller
 
         $book = Book::find($id);
 
-        Storage::delete('public/cover_buku' . $book->cover);
+        Storage::delete('public/cover_buku/' . $book->cover);
         $book->delete();
 
         return response()->json([
